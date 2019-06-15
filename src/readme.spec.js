@@ -66,24 +66,24 @@ describe('readme', () => {
     const templateName = 'default'
     const context = {
       isGithubRepos: true,
-      repositoryUrl: 'https://github.com/kefranabg/readme-md-generator',
+      repositoryUrl: 'https://github.com/jayskhatri/readme-md-generator',
       projectPrerequisites: ['npm >=5.5.0', 'node >=9.3.0'],
       projectName: 'readme-md-generator',
       projectVersion: '0.1.3',
       projectDescription:
         'Generates beautiful README files from git config & package.json infos',
       projectDocumentationUrl:
-        'https://github.com/kefranabg/readme-md-generator#readme',
+        'https://github.com/jayskhatri/readme-md-generator#readme',
       projectHomepage:
-        'https://github.com/kefranabg/readme-md-generator#readme',
-      authorName: 'Franck Abgrall',
-      authorGithubUsername: 'kefranabg',
-      authorTwitterUsername: 'FranckAbgrall',
+        'https://github.com/jayskhatri/readme-md-generator#readme',
+      authorName: 'Jay Khatri',
+      authorGithubUsername: 'jayskhatri',
+      authorTwitterUsername: 'jayskhatri',
       licenseName: 'MIT',
       licenseUrl:
-        'https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE',
+        'https://github.com/jayskhatri/readme-md-generator/blob/master/LICENSE',
       contributingUrl:
-        'https://github.com/kefranabg/readme-md-generator/issues',
+        'https://github.com/jayskhatri/readme-md-generator/issues',
       installCommand: 'npm install',
       usage: 'npm start',
       testCommand: 'npm run test'
@@ -109,23 +109,23 @@ describe('readme', () => {
         .toEqual(`<h1 align="center">Welcome to readme-md-generator 👋</h1>
 <p>
   <img src="https://img.shields.io/badge/version-0.1.3-blue.svg?cacheSeconds=2592000" />
-  <a href="https://github.com/kefranabg/readme-md-generator#readme">
+  <a href="https://github.com/jayskhatri/readme-md-generator#readme">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
   </a>
-  <a href="https://github.com/kefranabg/readme-md-generator/graphs/commit-activity">
+  <a href="https://github.com/jayskhatri/readme-md-generator/graphs/commit-activity">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
   </a>
-  <a href="https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE">
+  <a href="https://github.com/jayskhatri/readme-md-generator/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
   </a>
-  <a href="https://twitter.com/FranckAbgrall">
-    <img alt="Twitter: FranckAbgrall" src="https://img.shields.io/twitter/follow/FranckAbgrall.svg?style=social" target="_blank" />
+  <a href="https://twitter.com/jayskhatri">
+    <img alt="Twitter: jayskhatri" src="https://img.shields.io/twitter/follow/jayskhatri.svg?style=social" target="_blank" />
   </a>
 </p>
 
 > Generates beautiful README files from git config &amp; package.json infos
 
-### 🏠 [Homepage](https://github.com/kefranabg/readme-md-generator#readme)
+### 🏠 [Homepage](https://github.com/jayskhatri/readme-md-generator#readme)
 
 ## Prerequisites
 
@@ -152,14 +152,14 @@ npm run test
 
 ## Author
 
-👤 **Franck Abgrall**
+👤 **Jay Khatri**
 
-* Twitter: [@FranckAbgrall](https://twitter.com/FranckAbgrall)
-* Github: [@kefranabg](https://github.com/kefranabg)
+* Twitter: [@jayskhatri](https://twitter.com/jayskhatri)
+* Github: [@jayskhatri](https://github.com/jayskhatri)
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome !<br />Feel free to check [issues page](https://github.com/kefranabg/readme-md-generator/issues).
+Contributions, issues and feature requests are welcome !<br />Feel free to check [issues page](https://github.com/jayskhatri/readme-md-generator/issues).
 
 ## Show your support
 
@@ -167,11 +167,11 @@ Give a ⭐️ if this project helped you !
 
 ## 📝 License
 
-Copyright © 2019 [Franck Abgrall](https://github.com/kefranabg).<br />
-This project is [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE) licensed.
+Copyright © 2019 [Jay Khatri](https://github.com/jayskhatri).<br />
+This project is [MIT](https://github.com/jayskhatri/readme-md-generator/blob/master/LICENSE) licensed.
 
 ***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_`)
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/jayskhatri/readme-md-generator)_`)
     })
 
     it('should call ora with correct parameters in fail case', async () => {

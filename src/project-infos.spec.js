@@ -38,15 +38,15 @@ describe('projectInfos', () => {
         name: 'readme-md-generator',
         version: '0.1.3',
         description: 'CLI that generates beautiful README.md files.',
-        author: 'Franck Abgrall',
+        author: 'Jay Khatri',
         license: 'MIT',
-        homepage: 'https://github.com/kefranabg/readme-md-generator',
+        homepage: 'https://github.com/jayskhatri/readme-md-generator',
         repository: {
           type: 'git',
-          url: 'git+https://github.com/kefranabg/readme-md-generator.git'
+          url: 'git+https://github.com/jayskhatri/readme-md-generator.git'
         },
         bugs: {
-          url: 'https://github.com/kefranabg/readme-md-generator/issues'
+          url: 'https://github.com/jayskhatri/readme-md-generator/issues'
         },
         engines: {
           npm: '>=5.5.0',
@@ -55,7 +55,7 @@ describe('projectInfos', () => {
       }
       utils.getPackageJson.mockReturnValueOnce(Promise.resolve(packgeJsonInfos))
       childProcess.execSync.mockReturnValue(
-        'https://github.com/kefranabg/readme-md-generator.git'
+        'https://github.com/jayskhatri/readme-md-generator.git'
       )
 
       const projectInfos = await getProjectInfos()
@@ -64,21 +64,21 @@ describe('projectInfos', () => {
         name: 'readme-md-generator',
         description: 'CLI that generates beautiful README.md files.',
         version: '0.1.3',
-        author: 'Franck Abgrall',
-        repositoryUrl: 'https://github.com/kefranabg/readme-md-generator',
-        homepage: 'https://github.com/kefranabg/readme-md-generator',
+        author: 'Jay Khatri',
+        repositoryUrl: 'https://github.com/jayskhatri/readme-md-generator',
+        homepage: 'https://github.com/jayskhatri/readme-md-generator',
         contributingUrl:
-          'https://github.com/kefranabg/readme-md-generator/issues',
-        githubUsername: 'kefranabg',
+          'https://github.com/jayskhatri/readme-md-generator/issues',
+        githubUsername: 'jayskhatri',
         engines: {
           npm: '>=5.5.0',
           node: '>=9.3.0'
         },
         licenseName: 'MIT',
         licenseUrl:
-          'https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE',
+          'https://github.com/jayskhatri/readme-md-generator/blob/master/LICENSE',
         documentationUrl:
-          'https://github.com/kefranabg/readme-md-generator#readme',
+          'https://github.com/jayskhatri/readme-md-generator#readme',
         isGithubRepos: true,
         usage: undefined,
         testCommand: undefined
@@ -90,15 +90,15 @@ describe('projectInfos', () => {
         name: 'readme-md-generator',
         version: '0.1.3',
         description: 'CLI that generates beautiful README.md files.',
-        author: 'Franck Abgrall',
+        author: 'Jay Khatri',
         license: 'MIT',
-        homepage: 'https://gitlab.com/kefranabg/readme-md-generator',
+        homepage: 'https://gitlab.com/jayskhatri/readme-md-generator',
         repository: {
           type: 'git',
-          url: 'git+https://gitlab.com/kefranabg/readme-md-generator.git'
+          url: 'git+https://gitlab.com/jayskhatri/readme-md-generator.git'
         },
         bugs: {
-          url: 'https://gitlab.com/kefranabg/readme-md-generator/issues'
+          url: 'https://gitlab.com/jayskhatri/readme-md-generator/issues'
         },
         engines: {
           npm: '>=5.5.0',
@@ -107,7 +107,7 @@ describe('projectInfos', () => {
       }
       utils.getPackageJson.mockReturnValueOnce(Promise.resolve(packgeJsonInfos))
       childProcess.execSync.mockReturnValue(
-        'https://github.com/kefranabg/readme-md-generator.git'
+        'https://github.com/jayskhatri/readme-md-generator.git'
       )
 
       const projectInfos = await getProjectInfos()
@@ -116,11 +116,11 @@ describe('projectInfos', () => {
         name: 'readme-md-generator',
         description: 'CLI that generates beautiful README.md files.',
         version: '0.1.3',
-        author: 'Franck Abgrall',
-        repositoryUrl: 'https://gitlab.com/kefranabg/readme-md-generator',
+        author: 'Jay Khatri',
+        repositoryUrl: 'https://gitlab.com/jayskhatri/readme-md-generator',
         contributingUrl:
-          'https://gitlab.com/kefranabg/readme-md-generator/issues',
-        homepage: 'https://gitlab.com/kefranabg/readme-md-generator',
+          'https://gitlab.com/jayskhatri/readme-md-generator/issues',
+        homepage: 'https://gitlab.com/jayskhatri/readme-md-generator',
         githubUsername: undefined,
         engines: {
           npm: '>=5.5.0',
@@ -138,7 +138,7 @@ describe('projectInfos', () => {
     it('should return correct infos when package.json is not defined', async () => {
       utils.getPackageJson.mockReturnValueOnce(Promise.resolve(undefined))
       childProcess.execSync.mockReturnValue(
-        'https://github.com/kefranabg/readme-md-generator.git'
+        'https://github.com/jayskhatri/readme-md-generator.git'
       )
 
       const projectInfos = await getProjectInfos()
@@ -148,17 +148,17 @@ describe('projectInfos', () => {
         description: undefined,
         version: undefined,
         author: undefined,
-        repositoryUrl: 'https://github.com/kefranabg/readme-md-generator',
+        repositoryUrl: 'https://github.com/jayskhatri/readme-md-generator',
         contributingUrl:
-          'https://github.com/kefranabg/readme-md-generator/issues',
+          'https://github.com/jayskhatri/readme-md-generator/issues',
         homepage: undefined,
-        githubUsername: 'kefranabg',
+        githubUsername: 'jayskhatri',
         engines: undefined,
         licenseName: undefined,
         licenseUrl:
-          'https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE',
+          'https://github.com/jayskhatri/readme-md-generator/blob/master/LICENSE',
         documentationUrl:
-          'https://github.com/kefranabg/readme-md-generator#readme',
+          'https://github.com/jayskhatri/readme-md-generator#readme',
         isGithubRepos: true,
         usage: undefined,
         testCommand: undefined
@@ -168,7 +168,7 @@ describe('projectInfos', () => {
     it('should return correct infos when repos is not github and package.json are not defined', async () => {
       utils.getPackageJson.mockReturnValueOnce(Promise.resolve(undefined))
       childProcess.execSync.mockReturnValue(
-        'https://gitlab.com/kefranabg/readme-md-generator.git'
+        'https://gitlab.com/jayskhatri/readme-md-generator.git'
       )
 
       const projectInfos = await getProjectInfos()
@@ -178,9 +178,9 @@ describe('projectInfos', () => {
         description: undefined,
         version: undefined,
         author: undefined,
-        repositoryUrl: 'https://gitlab.com/kefranabg/readme-md-generator',
+        repositoryUrl: 'https://gitlab.com/jayskhatri/readme-md-generator',
         contributingUrl:
-          'https://gitlab.com/kefranabg/readme-md-generator/issues',
+          'https://gitlab.com/jayskhatri/readme-md-generator/issues',
         homepage: undefined,
         githubUsername: undefined,
         engines: undefined,
@@ -225,15 +225,15 @@ describe('projectInfos', () => {
         name: 'readme-md-generator',
         version: '0.1.3',
         description: 'CLI that generates beautiful README.md files.',
-        author: 'Franck Abgrall',
+        author: 'Jay Khatri',
         license: 'MIT',
-        homepage: 'https://github.com/kefranabg/readme-md-generator',
+        homepage: 'https://github.com/jayskhatri/readme-md-generator',
         repository: {
           type: 'git',
-          url: 'git+https://github.com/kefranabg/readme-md-generator.git'
+          url: 'git+https://github.com/jayskhatri/readme-md-generator.git'
         },
         bugs: {
-          url: 'https://github.com/kefranabg/readme-md-generator/issues'
+          url: 'https://github.com/jayskhatri/readme-md-generator/issues'
         },
         engines: {
           npm: '>=5.5.0',
@@ -251,21 +251,21 @@ describe('projectInfos', () => {
         name: 'readme-md-generator',
         description: 'CLI that generates beautiful README.md files.',
         version: '0.1.3',
-        author: 'Franck Abgrall',
-        repositoryUrl: 'https://github.com/kefranabg/readme-md-generator',
+        author: 'Jay Khatri',
+        repositoryUrl: 'https://github.com/jayskhatri/readme-md-generator',
         contributingUrl:
-          'https://github.com/kefranabg/readme-md-generator/issues',
-        homepage: 'https://github.com/kefranabg/readme-md-generator',
-        githubUsername: 'kefranabg',
+          'https://github.com/jayskhatri/readme-md-generator/issues',
+        homepage: 'https://github.com/jayskhatri/readme-md-generator',
+        githubUsername: 'jayskhatri',
         engines: {
           npm: '>=5.5.0',
           node: '>=9.3.0'
         },
         licenseName: 'MIT',
         licenseUrl:
-          'https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE',
+          'https://github.com/jayskhatri/readme-md-generator/blob/master/LICENSE',
         documentationUrl:
-          'https://github.com/kefranabg/readme-md-generator#readme',
+          'https://github.com/jayskhatri/readme-md-generator#readme',
         isGithubRepos: true,
         usage: undefined,
         testCommand: undefined
