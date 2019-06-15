@@ -65,9 +65,11 @@
 <% if (authorName || authorTwitterUsername || authorGithubUsername) { -%>
 
 ## Author
+<% for authorName in authorNames {%>
 <% if (authorName) { %>
 👤 **<%= authorName %>**
 <% } %>
+<% } -%>
 <% if (authorTwitterUsername) { -%>
 * Twitter: [@<%= authorTwitterUsername %>](https://twitter.com/<%= authorTwitterUsername %>)
 <% } -%>

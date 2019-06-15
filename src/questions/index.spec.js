@@ -5,6 +5,7 @@ describe('questions', () => {
     const questionsNameOrder = Object.keys(questions)
 
     expect(questionsNameOrder).toEqual([
+      'asktotalContributor',
       'askProjectName',
       'askProjectVersion',
       'askProjectDescription',

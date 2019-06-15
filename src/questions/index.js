@@ -1,4 +1,5 @@
 module.exports = {
+  askTotalAuthors: require('./total-author'),
   askProjectName: require('./project-name'),
   askProjectVersion: require('./project-version'),
   askProjectDescription: require('./project-description'),

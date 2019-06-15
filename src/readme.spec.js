@@ -76,6 +76,7 @@ describe('readme', () => {
         'https://github.com/jayskhatri/readme-md-generator#readme',
       projectHomepage:
         'https://github.com/jayskhatri/readme-md-generator#readme',
+      totalAuthors: 1,
       authorName: 'Jay Khatri',
       authorGithubUsername: 'jayskhatri',
       authorTwitterUsername: 'jayskhatri',
