@@ -2,7 +2,7 @@ const askAuthorName = require('./author-name')
 
 describe('askAuthorName', () => {
   it('should return correct question format', () => {
-    const author = 'Franck Abgrall'
+    const author = 'Jay Khatri'
     const projectInfos = { author }
 
     const result = askAuthorName(projectInfos)
