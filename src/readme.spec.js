@@ -66,6 +66,10 @@ describe('readme', () => {
     const templateName = 'default'
     const context = {
       isGithubRepos: true,
+      projectPrerequisites: [
+        { name: 'npm', value: '>=5.5.0' },
+        { name: 'node', value: '>= 9.3.0' }
+      ],
       repositoryUrl: 'https://github.com/jayskhatri/readme-md-generator',
       projectPrerequisites: ['npm >=5.5.0', 'node >=9.3.0'],
       projectName: 'readme-md-generator',
@@ -173,6 +177,7 @@ This project is [MIT](https://github.com/jayskhatri/readme-md-generator/blob/mas
 
 ***
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/jayskhatri/readme-md-generator)_`)
+      expect(result).toMatchSnapshot()
     })
 
     it('should call ora with correct parameters in fail case', async () => {
