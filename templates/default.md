@@ -1,7 +1,12 @@
 <h1 align="center">Welcome to <%= projectName %> 👋</h1>
 <p>
-<% if (projectVersion) { -%>
-  <img src="https://img.shields.io/badge/version-<%= projectVersion %>-blue.svg?cacheSeconds=2592000" />
+<% if (isProjectOnNpm) { -%>
+  <a href="https://www.npmjs.com/package/<%= projectName %>" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/<%= projectName %>.svg">
+  </a>
+<% } -%>
+<% if (projectVersion && !isProjectOnNpm) { -%>
+  <img alt="Version" src="https://img.shields.io/badge/version-<%= projectVersion %>-blue.svg?cacheSeconds=2592000" />
 <% } -%>
 <% if (projectPrerequisites) { -%>
 <% projectPrerequisites.map(({ name, value }) => { -%>
@@ -9,23 +14,23 @@
 <% }) -%>
 <% } -%>
 <% if (projectDocumentationUrl) { -%>
-  <a href="<%= projectDocumentationUrl %>">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
+  <a href="<%= projectDocumentationUrl %>" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
 <% } -%>
 <% if (isGithubRepos) { -%>
-  <a href="<%= repositoryUrl %>/graphs/commit-activity">
-    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
+  <a href="<%= repositoryUrl %>/graphs/commit-activity" target="_blank">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
 <% } -%>
-<% if (licenseName && licenseUrl) { -%>
-  <a href="<%= licenseUrl %>">
-    <img alt="License: <%= licenseName %>" src="https://img.shields.io/badge/License-<%= licenseName %>-yellow.svg" target="_blank" />
+<% if (licenseName) { -%>
+  <a href="<%= licenseUrl ? licenseUrl : '#' %>" target="_blank">
+    <img alt="License: <%= licenseName %>" src="https://img.shields.io/<%= isGithubRepos ? `github/license/${authorGithubUsername}/${projectName}` : `badge/License-${licenseName}-yellow.svg` %>" />
   </a>
 <% } -%>
 <% if (authorTwitterUsername) { -%>
-  <a href="https://twitter.com/<%= authorTwitterUsername %>">
-    <img alt="Twitter: <%= authorTwitterUsername %>" src="https://img.shields.io/twitter/follow/<%= authorTwitterUsername %>.svg?style=social" target="_blank" />
+  <a href="https://twitter.com/<%= authorTwitterUsername %>" target="_blank">
+    <img alt="Twitter: <%= authorTwitterUsername %>" src="https://img.shields.io/twitter/follow/<%= authorTwitterUsername %>.svg?style=social" />
   </a>
 <% } -%>
 </p>
@@ -37,7 +42,11 @@
 
 ### 🏠 [Homepage](<%= projectHomepage %>)
 <% } -%>
-<% if (projectPrerequisites) { -%>
+<% if (projectDemoUrl) { -%>
+
+### ✨ [Demo](<%= projectDemoUrl %>)
+<% } -%>
+<% if (projectPrerequisites && projectPrerequisites.length) { -%>
 
 ## Prerequisites
 
@@ -75,23 +84,35 @@
 <% if (authorName) { %>
 👤 **<%= authorName %>**
 <% } %>
+<% if (authorWebsite) { -%>
+* Website: <%= authorWebsite %>
+<% } -%>
 <% if (authorTwitterUsername) { -%>
 * Twitter: [@<%= authorTwitterUsername %>](https://twitter.com/<%= authorTwitterUsername %>)
 <% } -%>
 <% if (authorGithubUsername) { -%>
-* Github: [@<%= authorGithubUsername %>](https://github.com/<%= authorGithubUsername %>)
+* GitHub: [@<%= authorGithubUsername %>](https://github.com/<%= authorGithubUsername %>)
+<% } -%>
+<% if (authorLinkedInUsername) { -%>
+* LinkedIn: [@<%= authorLinkedInUsername %>](https://linkedin.com/in/<%= authorLinkedInUsername %>)
 <% } -%>
 <% } -%>
-<% if (contributingUrl) { -%>
+<% if (issuesUrl) { -%>
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](<%= contributingUrl %>).
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](<%= issuesUrl %>). <%= contributingUrl ? `You can also take a look at the [contributing guide](${contributingUrl}).` : '' %>
 <% } -%>
 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+<% if (authorPatreonUsername) { -%>
+
+<a href="https://www.patreon.com/<%= authorPatreonUsername %>">
+  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
+</a>
+<% } -%>
 <% if (licenseName && licenseUrl) { -%>
 
 ## 📝 License

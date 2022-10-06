@@ -4,7 +4,12 @@ const has = require('lodash/has')
 const ora = require('ora')
 const { execSync } = require('child_process')
 
-const { getPackageJson, getProjectName } = require('./utils')
+const {
+  getPackageJson,
+  getProjectName,
+  getAuthorWebsiteFromGithubAPI,
+  getPackageManagerFromLockFile
+} = require('./utils')
 
 const GITHUB_URL = 'https://github.com/'
 
@@ -95,6 +100,27 @@ const getLicenseUrlFromGithubRepositoryUrl = repositoryUrl =>
 const getReadmeUrlFromGithubRepositoryUrl = repositoryUrl =>
   `${repositoryUrl}#readme`
 
+const getContributingUrlFromRepositoryUrl = repositoryUrl =>
+  `${repositoryUrl}/blob/master/CONTRIBUTING.md`
+
+/**
+ * Get project author name from package.json
+ *
+ * @param packageJson
+ * @returns {string} authorName
+ */
+const getAuthorName = packageJson => {
+  if (has(packageJson, 'author.name')) {
+    return get(packageJson, 'author.name', undefined)
+  }
+
+  if (has(packageJson, 'author') && typeof packageJson.author === 'string') {
+    return get(packageJson, 'author', undefined)
+  }
+
+  return undefined
+}
+
 /**
  * Get project informations from git and package.json
  */
@@ -102,25 +128,33 @@ const getProjectInfos = async () => {
   const spinner = ora('Gathering project infos').start()
 
   const packageJson = await getPackageJson()
+  const isJSProject = !!packageJson
+  const packageManager = isJSProject
+    ? getPackageManagerFromLockFile()
+    : undefined
   const name = getProjectName(packageJson)
   const description = get(packageJson, 'description', undefined)
   const engines = get(packageJson, 'engines', undefined)
-  const author = get(packageJson, 'author', undefined)
+  const author = getAuthorName(packageJson)
   const version = get(packageJson, 'version', undefined)
   const licenseName = get(packageJson, 'license', undefined)
   const homepage = get(packageJson, 'homepage', undefined)
-  const usage = has(packageJson, 'scripts.start') ? 'npm run start' : undefined
-  const testCommand = has(packageJson, 'scripts.test')
-    ? 'npm run test'
-    : undefined
+  const hasStartCommand = has(packageJson, 'scripts.start')
+  const hasTestCommand = has(packageJson, 'scripts.test')
   const repositoryUrl = await getReposUrl(packageJson)
-  const contributingUrl = await getReposIssuesUrl(packageJson)
+  const issuesUrl = await getReposIssuesUrl(packageJson)
   const isGithubRepos = isGithubRepository(repositoryUrl)
+  const contributingUrl = repositoryUrl
+    ? getContributingUrlFromRepositoryUrl(repositoryUrl)
+    : undefined
   const documentationUrl = isGithubRepos
     ? getReadmeUrlFromGithubRepositoryUrl(repositoryUrl)
     : undefined
   const githubUsername = isGithubRepos
     ? getGithubUsernameFromRepositoryUrl(repositoryUrl)
+    : undefined
+  const authorWebsite = githubUsername
+    ? await getAuthorWebsiteFromGithubAPI(githubUsername)
     : undefined
   const licenseUrl = isGithubRepos
     ? getLicenseUrlFromGithubRepositoryUrl(repositoryUrl)
@@ -133,8 +167,10 @@ const getProjectInfos = async () => {
     description,
     version,
     author,
+    authorWebsite,
     homepage,
     repositoryUrl,
+    issuesUrl,
     contributingUrl,
     githubUsername,
     engines,
@@ -142,8 +178,10 @@ const getProjectInfos = async () => {
     licenseUrl,
     documentationUrl,
     isGithubRepos,
-    usage,
-    testCommand
+    hasStartCommand,
+    hasTestCommand,
+    isJSProject,
+    packageManager
   }
 }
 

@@ -1,9 +1,12 @@
 const ejs = require('ejs')
-const path = require('path')
 const ora = require('ora')
 const { promisify } = require('util')
-const getYear = require('date-fns/get_year')
+const { getYear } = require('date-fns')
 const fs = require('fs')
+const { isNil, unescape } = require('lodash')
+
+const chooseTemplate = require('./choose-template')
+const askOverwriteReadme = require('./ask-overwrite')
 
 const README_PATH = 'README.md'
 
@@ -16,7 +19,7 @@ const writeReadme = async readmeContent => {
   const spinner = ora('Creating README').start()
 
   try {
-    await promisify(fs.writeFile)(README_PATH, readmeContent)
+    await promisify(fs.writeFile)(README_PATH, unescape(readmeContent))
     spinner.succeed('README created')
   } catch (err) {
     spinner.fail('README creation fail')
@@ -43,17 +46,13 @@ const getReadmeTemplate = async templatePath => {
 }
 
 /**
- * Build README content with the given answersContext and templateName
+ * Build README content with the given context and templatePath
  *
  * @param {Object} context
- * @param {string} templateName
+ * @param {string} templatePath
  */
-const buildReadmeContent = async (context, templateName) => {
+const buildReadmeContent = async (context, templatePath) => {
   const currentYear = getYear(new Date())
-  const templatePath = path.resolve(
-    __dirname,
-    `../templates/${templateName}.md`
-  )
   const template = await getReadmeTemplate(templatePath)
 
   return ejs.render(template, {
@@ -63,8 +62,50 @@ const buildReadmeContent = async (context, templateName) => {
   })
 }
 
+/**
+ * Validate template path
+ *
+ * @param {string} templatePath
+ */
+const validateReadmeTemplatePath = templatePath => {
+  const spinner = ora('Resolving README template path').start()
+
+  try {
+    fs.lstatSync(templatePath).isFile()
+  } catch (err) {
+    spinner.fail(`The template path '${templatePath}' is not valid.`)
+    throw err
+  }
+
+  spinner.succeed('README template path resolved')
+}
+
+/**
+ * Get readme template path
+ * (either a custom template, or a template that user will choose from prompt)
+ *
+ * @param {String} customTemplate
+ */
+const getReadmeTemplatePath = async (customTemplate, useDefaultAnswers) => {
+  const templatePath = isNil(customTemplate)
+    ? await chooseTemplate(useDefaultAnswers)
+    : customTemplate
+
+  validateReadmeTemplatePath(templatePath)
+
+  return templatePath
+}
+
+/**
+ * Check if readme generator can overwrite the existed readme
+ */
+const checkOverwriteReadme = () =>
+  !fs.existsSync(README_PATH) || askOverwriteReadme()
+
 module.exports = {
   writeReadme,
   buildReadmeContent,
-  README_PATH
+  README_PATH,
+  getReadmeTemplatePath,
+  checkOverwriteReadme
 }

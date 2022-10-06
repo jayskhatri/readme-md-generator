@@ -1,9 +1,23 @@
 const fs = require('fs')
 const ora = require('ora')
+const path = require('path')
+const chooseTemplate = require('./choose-template')
+const askOverwriteReadme = require('./ask-overwrite')
 
-jest.mock('ora')
+const defaultTemplatePath = path.resolve(__dirname, '../templates/default.md')
+const defaultNoHtmlTemplatePath = path.resolve(
+  __dirname,
+  '../templates/default-no-html.md'
+)
+chooseTemplate.mockReturnValue(defaultTemplatePath)
 
-const { writeReadme, buildReadmeContent, README_PATH } = require('./readme')
+const {
+  writeReadme,
+  buildReadmeContent,
+  README_PATH,
+  getReadmeTemplatePath,
+  checkOverwriteReadme
+} = require('./readme')
 
 describe('readme', () => {
   const succeed = jest.fn()
@@ -23,7 +37,7 @@ describe('readme', () => {
   describe('writeReadme', () => {
     it('should call ora with correct parameters in success case', async () => {
       const readmeContent = 'content'
-      fs.writeFile = jest.fn((path, content, cb) => cb(null, 'done'))
+      fs.writeFile = jest.fn((_, __, cb) => cb(null, 'done'))
 
       await writeReadme(readmeContent)
 
@@ -51,19 +65,18 @@ describe('readme', () => {
     })
 
     it('should call writeFile with correct parameters', async () => {
-      const readmeContent = 'content'
-      fs.writeFile = jest.fn((path, content, cb) => cb(null, 'done'))
+      const readmeContent = 'John &amp; Bryan'
+      fs.writeFile = jest.fn((_, __, cb) => cb(null, 'done'))
 
       await writeReadme(readmeContent)
 
       expect(fs.writeFile).toHaveBeenCalledTimes(1)
       expect(fs.writeFile.mock.calls[0][0]).toBe(README_PATH)
-      expect(fs.writeFile.mock.calls[0][1]).toBe(readmeContent)
+      expect(fs.writeFile.mock.calls[0][1]).toBe('John & Bryan')
     })
   })
 
   describe('buildReadmeContent', () => {
-    const templateName = 'default'
     const context = {
       isGithubRepos: true,
       repositoryUrl: 'https://github.com/kefranabg/readme-md-generator',
@@ -79,17 +92,23 @@ describe('readme', () => {
         'https://github.com/kefranabg/readme-md-generator#readme',
       projectHomepage:
         'https://github.com/kefranabg/readme-md-generator#readme',
+      projectDemoUrl: 'https://github.com/kefranabg/readme-md-generator#-demo',
       authorName: 'Franck Abgrall',
+      authorWebsite: 'https://www.franck-abgrall.me/',
       authorGithubUsername: 'kefranabg',
       authorTwitterUsername: 'FranckAbgrall',
+      authorLinkedInUsername: 'franckabgrall',
+      authorPatreonUsername: 'FranckAbgrall',
       licenseName: 'MIT',
       licenseUrl:
         'https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE',
+      issuesUrl: 'https://github.com/kefranabg/readme-md-generator/issues',
       contributingUrl:
-        'https://github.com/kefranabg/readme-md-generator/issues',
+        'https://github.com/kefranabg/readme-md-generator/blob/master/CONTRIBUTING.md',
       installCommand: 'npm install',
       usage: 'npm start',
-      testCommand: 'npm run test'
+      testCommand: 'npm run test',
+      isProjectOnNpm: true
     }
 
     afterEach(() => {
@@ -97,7 +116,7 @@ describe('readme', () => {
     })
 
     it('should call ora with correct parameters in success case', async () => {
-      await buildReadmeContent(context, templateName)
+      await buildReadmeContent(context, defaultTemplatePath)
 
       expect(ora).toHaveBeenCalledTimes(1)
       expect(ora).toHaveBeenCalledWith('Loading README template')
@@ -105,8 +124,17 @@ describe('readme', () => {
       expect(succeed).toHaveBeenCalledWith('README template loaded')
     })
 
-    it('should return readme template content', async () => {
-      const result = await buildReadmeContent(context, templateName)
+    it('should return readme default template content', async () => {
+      const result = await buildReadmeContent(context, defaultTemplatePath)
+
+      expect(result).toMatchSnapshot()
+    })
+
+    it('should return readme default template no html content', async () => {
+      const result = await buildReadmeContent(
+        context,
+        defaultNoHtmlTemplatePath
+      )
 
       expect(result).toMatchSnapshot()
     })
@@ -117,7 +145,7 @@ describe('readme', () => {
       })
 
       try {
-        await buildReadmeContent(context, templateName)
+        await buildReadmeContent(context, defaultTemplatePath)
         // eslint-disable-next-line no-empty
       } catch (err) {}
 
@@ -127,4 +155,81 @@ describe('readme', () => {
       expect(fail).toHaveBeenCalledWith('README template loading fail')
     })
   })
+
+  describe('getReadmeTemplatePath', () => {
+    it('should return template that user has selected', async () => {
+      const useDefaultAnswers = false
+      const actualResult = await getReadmeTemplatePath(
+        undefined,
+        useDefaultAnswers
+      )
+
+      expect(actualResult).toEqual(defaultTemplatePath)
+      expect(chooseTemplate).toHaveBeenNthCalledWith(1, useDefaultAnswers)
+    })
+
+    it('should return custom template path if customTemplatePath is defined', async () => {
+      const customTemplatePath = defaultTemplatePath
+
+      const actualResult = await getReadmeTemplatePath(
+        customTemplatePath,
+        false
+      )
+
+      expect(actualResult).toEqual(customTemplatePath)
+      expect(chooseTemplate).not.toHaveBeenCalled()
+    })
+
+    it('should throw an error if customTemplate is defined but invalid', () => {
+      const wrongPath = 'wrong path'
+
+      expect(getReadmeTemplatePath(wrongPath, false)).rejects.toThrow()
+    })
+
+    it('should call ora with correct parameters in fail case', async () => {
+      const wrongPath = 'wrong path'
+
+      try {
+        await getReadmeTemplatePath(wrongPath, false)
+        // eslint-disable-next-line no-empty
+      } catch (err) {}
+
+      expect(ora).toHaveBeenNthCalledWith(1, 'Resolving README template path')
+      expect(fail).toHaveBeenNthCalledWith(
+        1,
+        "The template path 'wrong path' is not valid."
+      )
+    })
+
+    it('should call ora with correct parameters in success case', async () => {
+      await getReadmeTemplatePath(defaultTemplatePath, false)
+
+      expect(ora).toHaveBeenNthCalledWith(1, 'Resolving README template path')
+      expect(succeed).toHaveBeenNthCalledWith(
+        1,
+        'README template path resolved'
+      )
+    })
+  })
+
+  describe('checkOverwrite', () => {
+    it('should return true if README does not exist', async () => {
+      fs.existsSync = jest.fn(p => p !== README_PATH)
+      expect(await checkOverwriteReadme()).toEqual(true)
+    })
+    it('should return true if README exist and user want to overwrite it', async () => {
+      fs.existsSync = jest.fn(p => p === README_PATH)
+      askOverwriteReadme.mockResolvedValue(true)
+      expect(await checkOverwriteReadme()).toEqual(true)
+    })
+    it('should return false if README exist and user dont want to overwrite it', async () => {
+      fs.existsSync = jest.fn(p => p === README_PATH)
+      askOverwriteReadme.mockResolvedValue(false)
+      expect(await checkOverwriteReadme()).toEqual(false)
+    })
+  })
 })
+
+jest.mock('ora')
+jest.mock('./choose-template')
+jest.mock('./ask-overwrite')
